@@ -1,0 +1,30 @@
+{
+  "name": "jsdoc",
+  "version": "0.0.1",
+  "description": "create doc from javascript source files",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yanni4night/jsdoc"
+  },
+  "keywords": [
+    "jsdoc"
+  ],
+  "author": "yanni4night@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanni4night/jsdoc/issues"
+  },
+  "homepage": "https://github.com/yanni4night/jsdoc",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.4.1"
+  }
+}
