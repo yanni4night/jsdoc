@@ -44,7 +44,16 @@ exports.jsdoc = {
         var comment = grunt.file.read(__dirname + '/source/demo.js');
         var docs = jsdoc(comment);
 
-        test.deepEqual(4, docs.length);
+        test.deepEqual(2, Object.keys(docs.classes).length);
+
+        test.ok(!!docs.classes.Parser);
+        test.deepEqual(2, docs.classes.Parser._methods.length);
+        test.deepEqual(2, docs.classes.Parser._attrs.length);
+
+        test.ok(!!docs.classes.Cat);
+        test.deepEqual(1, docs.classes.Cat._attrs.length);
+
+        test.deepEqual(1, docs.methods.length);
         test.done();
     }
 };
