@@ -47,10 +47,12 @@ exports.jsdoc = {
         test.deepEqual(2, Object.keys(docs.classes).length);
 
         test.ok(!!docs.classes.Parser);
+        test.ok(!docs.classes.Parser._def);
         test.deepEqual(2, docs.classes.Parser._methods.length);
         test.deepEqual(2, docs.classes.Parser._attrs.length);
 
         test.ok(!!docs.classes.Cat);
+        test.ok(!!docs.classes.Cat._def);
         test.deepEqual(1, docs.classes.Cat._attrs.length);
 
         test.deepEqual(1, docs.methods.length);

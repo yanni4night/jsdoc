@@ -202,7 +202,8 @@ SourceTextParser.prototype = {
             if (null !== Comment.clazz && undefined !== Comment.clazz) {
                 if ('' === Comment.clazz && 'func' === Comment.type) {
                     clazz = Comment.getFunc().name;
-                    isConstructor = true;
+                    if (null === Comment.getTag('method') || undefined === Comment.getTag('method'))
+                        isConstructor = true;
                 } else if ('' === Comment.clazz && 'attr' === Comment.type) {
                     clazz = Comment.getAttr().name;
                 } else {
