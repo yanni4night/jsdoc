@@ -1,5 +1,5 @@
 {
-  "name": "jsdoc",
+  "name": "yjsdoc",
   "version": "0.0.1",
   "description": "create doc from javascript source files",
   "main": "index.js",
