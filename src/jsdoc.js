@@ -219,7 +219,7 @@ SourceTextParser.prototype = {
                     clazObj._def = Comment;
                 }
 
-                if (Comment.type === 'func') {
+                if (Comment.type === 'func'&&!isConstructor) {
                     clazObj._methods.push(Comment);
                 } else if (Comment.type === 'attr') {
                     clazObj._attrs.push(Comment);
