@@ -15,17 +15,27 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             options: {
+                multistr: true,
                 strict: true, //use strict
                 node: true //module,require,console
             },
-            js: ['src/**/*.js']
+            js: ['src/*.js', 'test/*.js']
         },
-        nodeunit: {}
+        watch: {
+            libjs: {
+                files: ['src/*.js', 'test/*.js', 'test/source/*'],
+                tasks: ['test']
+            }
+        },
+        nodeunit: {
+            js: ['test/*.js']
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', []);
-    grunt.registerTask('test', []);
+    grunt.registerTask('default', ['jshint']);
+    grunt.registerTask('test', ['jshint', 'nodeunit']);
 };
