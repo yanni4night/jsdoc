@@ -15,7 +15,10 @@
 var extend = require('extend');
 require('string.prototype.startswith');
 
-//create a new comment model
+
+function isNullOrUndefined(obj) {
+    return null === obj || undefined === obj;
+}
 
 /**
  * Comment is a block of source comemnt.
@@ -48,6 +51,7 @@ function Comment() {
     */
     };
 }
+
 
 Comment.prototype = {
     /**
@@ -243,18 +247,21 @@ SourceTextParser.prototype = {
     }, //parse
     _merge: function() {
         this.Comments.forEach(function(Comment) {
-            var clazz, clazObj, method, isConstructor;
-            if (null !== Comment.clazz && undefined !== Comment.clazz) {
-                if ('' === Comment.clazz && 'func' === Comment.type) {
-                    clazz = Comment.getFunc().name;
-                    if (null === Comment.getTag('method') || undefined === Comment.getTag('method'))
-                        isConstructor = true;
-                } else if ('' === Comment.clazz && 'attr' === Comment.type) {
-                    clazz = Comment.getAttr().name;
+            var className, clazObj, method, isConstructor = false;
+            if (!isNullOrUndefined(Comment.clazz)) {
+                if (!Comment.clazz) {
+                    //empty string class means it's a defination
+                    isConstructor = true;
+                    if ('func' === Comment.type) {
+                        className = Comment.getFunc().name;
+                    } else {
+                        className = Comment.getAttr().name;
+                    }
                 } else {
-                    clazz = Comment.clazz;
+                    //Or just a member of a class
+                    className = Comment.clazz;
                 }
-                clazObj = this.classes[clazz] = this.classes[clazz] || {
+                clazObj = this.classes[className] = this.classes[className] || {
                     _def: null,
                     _methods: {},
                     _attrs: {}
@@ -262,16 +269,20 @@ SourceTextParser.prototype = {
                 if (isConstructor) {
                     //this is class function
                     clazObj._def = Comment;
+                } else {
+                    if ('func' === Comment.type) {
+                        clazObj._methods[Comment.func.name] = Comment;
+                    } else {
+                        clazObj._attrs[Comment.attr.name] = Comment;
+                    }
                 }
 
-                if (Comment.type === 'func' && !isConstructor) {
-                    clazObj._methods[Comment.func.name] = Comment;
-                } else if (Comment.type === 'attr') {
-                    clazObj._attrs[Comment.attr.name] = Comment;
-                }
             } else {
-                //without class,we see it as a homeless method
-                this.methods[Comment.func.name] = Comment;
+                //without clazz,we see it as a homeless method
+                if ('func' === Comment.type) {
+                    this.methods[Comment.func.name] = Comment;
+                }
+                //we ignore homeless vars
             }
         }, this);
     } //_merge

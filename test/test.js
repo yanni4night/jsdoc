@@ -47,7 +47,7 @@ exports.jsdoc = {
         test.deepEqual(2, Object.keys(docs.classes).length);
 
         test.ok(!!docs.classes.Parser);
-        test.ok(!docs.classes.Parser._def);
+        test.ok(!!docs.classes.Parser._def);
         test.deepEqual(2, Object.keys(docs.classes.Parser._methods).length);
         test.deepEqual(2, docs.classes.Parser._methods.parse.tags.param.length);
         test.deepEqual(2, docs.classes.Parser._methods.parse.tags.throws.length);
@@ -60,7 +60,7 @@ exports.jsdoc = {
 
         test.deepEqual(1, Object.keys(docs.methods).length);
 
-       // console.log(JSON.stringify(docs, null, '    '));
+       console.log(JSON.stringify(docs, null, '    '));
 
         test.done();
     }

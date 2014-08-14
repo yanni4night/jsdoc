@@ -24,6 +24,17 @@ function Cat(){//---------------------------------------------CLASS
     this.smile = 'always';
 }
 
+
+/**
+ * [homelessVar description]
+ * @type {Number}
+ */
+var homelessVar = 80;
+/**
+ * [Parser description]
+ * 
+ * @class
+ */
 var Parser = {//---------------------------------------------CLASS
     /**
      * Version description.
