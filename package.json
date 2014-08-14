@@ -1,6 +1,6 @@
 {
   "name": "yjsdoc",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "create doc from javascript source files",
   "main": "index.js",
   "directories": {
