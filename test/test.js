@@ -48,14 +48,20 @@ exports.jsdoc = {
 
         test.ok(!!docs.classes.Parser);
         test.ok(!docs.classes.Parser._def);
-        test.deepEqual(2, docs.classes.Parser._methods.length);
-        test.deepEqual(2, docs.classes.Parser._attrs.length);
+        test.deepEqual(2, Object.keys(docs.classes.Parser._methods).length);
+        test.deepEqual(2, docs.classes.Parser._methods.parse.tags.param.length);
+        test.deepEqual(2, docs.classes.Parser._methods.parse.tags.throws.length);
+        test.ok('string' === typeof docs.classes.Parser._methods.parse.tags.since);
+        test.deepEqual(2, Object.keys(docs.classes.Parser._attrs).length);
 
         test.ok(!!docs.classes.Cat);
         test.ok(!!docs.classes.Cat._def);
-        test.deepEqual(1, docs.classes.Cat._attrs.length);
+        test.deepEqual(1, Object.keys(docs.classes.Cat._attrs).length);
 
-        test.deepEqual(1, docs.methods.length);
+        test.deepEqual(1, Object.keys(docs.methods).length);
+
+       // console.log(JSON.stringify(docs, null, '    '));
+
         test.done();
     }
 };

@@ -19,7 +19,11 @@ require('string.prototype.startswith');
 
 /**
  * Comment is a block of source comemnt.
- * 
+ *
+ * As comment is only for function(class) and attribute,
+ * so we define a type which indicates what type it is.
+ * For different,'attr'/'func' saves the real payload data.
+ *
  * @class
  * @since 0.1.0
  * @version 0.1.0
@@ -47,7 +51,8 @@ function Comment() {
 
 Comment.prototype = {
     /**
-     * [setFunc description]
+     * Set the function
+     *
      * @param {String} name
      * @param {String} params
      * @class Comment
@@ -70,7 +75,7 @@ Comment.prototype = {
         return this.func;
     },
     /**
-     * [setAttr description]
+     * Set the attribute.
      *
      * @param {String} name
      * @since 0.1.0
@@ -91,16 +96,18 @@ Comment.prototype = {
         return this.attr;
     },
     /**
-     * [addDesc description]
-     * @param {[type]} desc
+     * Add a description.
+     *
+     * @param {String} desc
      * @class Comment
+     * @since 0.1.0
      */
     addDesc: function(desc) {
         this.descs.push(desc);
     },
     /**
      * Add a tag except 'class','extends'
-     * 
+     *
      * @param {String} name
      * @param {String} value
      * @class Comment
@@ -110,6 +117,30 @@ Comment.prototype = {
         name = name.trim();
         value = (value || "").trim();
         switch (name) {
+            //The following are single allowed.
+            case 'return':
+            case 'copyright':
+            case 'author':
+            case 'since':
+            case 'description':
+            case 'example':
+            case 'version':
+            case 'override':
+            case 'todo':
+            case 'deprecated':
+                this.tags[name] = value;
+                break;
+                //The following are multiple allowed
+            case 'param':
+            case 'see':
+            case 'throws':
+                if (!Array.isArray(this.tags[name])) {
+                    this.tags[name] = [value];
+                } else {
+                    this.tags[name].push(value);
+                }
+                break;
+                //The following are meaning stuff.
             case 'class':
                 this.clazz = value;
                 break;
@@ -117,16 +148,12 @@ Comment.prototype = {
                 this.zuper = value;
                 break;
             default:
-                //Array
-                if (!Array.isArray(this.tags[name])) {
-                    this.tags[name] = value;
-                } else {
-                    this.tags[name].push(value);
-                }
+                //ignore others
         }
     },
     /**
      * Get the tag named [name]
+     *
      * @param  {String} name
      * @return {String}
      * @since 0.1.0
@@ -137,7 +164,7 @@ Comment.prototype = {
     },
     /**
      * Remove a tag
-     * 
+     *
      * @param  {String} name
      * @return {Boolean} If removed succeed
      * @class Comment
@@ -224,22 +251,22 @@ SourceTextParser.prototype = {
                 }
                 clazObj = this.classes[clazz] = this.classes[clazz] || {
                     _def: null,
-                    _methods: [],
-                    _attrs: []
+                    _methods: {},
+                    _attrs: {}
                 };
                 if (isConstructor) {
                     //this is class function
                     clazObj._def = Comment;
                 }
 
-                if (Comment.type === 'func'&&!isConstructor) {
-                    clazObj._methods.push(Comment);
+                if (Comment.type === 'func' && !isConstructor) {
+                    clazObj._methods[Comment.func.name] = Comment;
                 } else if (Comment.type === 'attr') {
-                    clazObj._attrs.push(Comment);
+                    clazObj._attrs[Comment.attr.name] = Comment;
                 }
             } else {
                 //without class,we see it as a homeless method
-                this.methods.push(Comment);
+                this.methods[Comment.func.name] = Comment;
             }
         }, this);
     } //_merge
@@ -260,7 +287,7 @@ module.exports = function(source, options) {
         }
     */
         },
-        homelessMethods = [];
+        homelessMethods = {};
 
     if (!Array.isArray(source)) {
         source = [source];

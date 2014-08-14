@@ -37,7 +37,12 @@ var Parser = {//---------------------------------------------CLASS
      * 
      * @method 
      * @class Parser
+     * @param {String} d
+     * @param {String} x
+     * @throws {Error} If [this condition is met]
+     * @throws {Error} If [this condition is met]
      * @return {String} The out put string parsed.
+     * @since 0.1.0
      */
     parse: function (d, x) {//----------------------------------METHOD
         return 'Done';
