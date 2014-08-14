@@ -131,6 +131,7 @@ Comment.prototype = {
             case 'version':
             case 'override':
             case 'todo':
+            case 'type':
             case 'ignore':
             case 'deprecated':
                 this.tags[name] = value;

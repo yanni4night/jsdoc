@@ -246,7 +246,7 @@ tags
 =====
 
 The following tags are allowed to show only once:
-`return`,`copyright`,`author`,`since`,`description`,`example`,`version`,`override`,`todo`,`deprecated`
+`return`,`copyright`,`author`,`since`,`description`,`example`,`version`,`override`,`todo`,`deprecated`,`type`
 
 The following tags are allowd to show twice and more:
 `param`,`see`,`throws`
@@ -255,8 +255,7 @@ we ignore other tags
 
 changelog
 =====
- - 2014-08-14[13:44:19]:ignore supported
- - 2014-08-14[11:33:27]:first publish version,better format output
+ - 2014-08-14:first publish version,better format output;`ignore`,`type` supported
 
 contact
 =====
