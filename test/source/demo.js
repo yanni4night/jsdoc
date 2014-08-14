@@ -4,7 +4,7 @@
  * @param  {String} name The name of object.
  * @return {Boolean} True
  */
-function fly(name) {//----------------------------------------FUNCTION
+function fly (name) {//----------------------------------------FUNCTION
     return true;
 }
 
@@ -39,7 +39,7 @@ var Parser = {//---------------------------------------------CLASS
      * @class Parser
      * @return {String} The out put string parsed.
      */
-    parse: function(d, x) {//----------------------------------METHOD
+    parse: function (d, x) {//----------------------------------METHOD
         return 'Done';
     }
 };

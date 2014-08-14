@@ -6,7 +6,7 @@
  * 2014-08-12[18:41:03]:authorized
  *
  * @author yanni4night@gmail.com
- * @version 0.1.0
+ * @version 0.1.1
  * @since 0.1.0
  */
 
@@ -18,7 +18,8 @@ require('string.prototype.startswith');
 //create a new comment model
 
 /**
- * [Comment description]
+ * Comment is a block of source comemnt.
+ * 
  * @class
  * @since 0.1.0
  * @version 0.1.0
@@ -47,9 +48,10 @@ function Comment() {
 Comment.prototype = {
     /**
      * [setFunc description]
-     * @param {[type]} name
-     * @param {[type]} params
+     * @param {String} name
+     * @param {String} params
      * @class Comment
+     * @since 0.1.0
      */
     setFunc: function(name, params) {
         this.func.name = name;
@@ -58,9 +60,11 @@ Comment.prototype = {
         this.type = 'func';
     },
     /**
-     * [getFunc description]
+     * Get function
      *
      * @return {Object}
+     * @since 0.1.0
+     * @class  Comment
      */
     getFunc: function() {
         return this.func;
@@ -68,18 +72,19 @@ Comment.prototype = {
     /**
      * [setAttr description]
      *
-     * @param {[type]} name
-     * @param {[type]} desc
+     * @param {String} name
+     * @since 0.1.0
      * @class Comment
-     * @method
      */
     setAttr: function(name) {
         this.attr.name = name;
         this.type = 'attr';
     },
     /**
-     * [getAttr description]
+     * Get the attributes
      *
+     * @class  Comment
+     * @since 0.1.0
      * @return {Object}
      */
     getAttr: function() {
@@ -94,10 +99,12 @@ Comment.prototype = {
         this.descs.push(desc);
     },
     /**
-     * [addTag description]
-     * @param {[type]} name
-     * @param {[type]} value
+     * Add a tag except 'class','extends'
+     * 
+     * @param {String} name
+     * @param {String} value
      * @class Comment
+     * @since 0.1.0
      */
     addTag: function(name, value) {
         name = name.trim();
@@ -119,18 +126,22 @@ Comment.prototype = {
         }
     },
     /**
-     * [getTag description]
-     * @param  {[type]} name
-     * @return {[type]}
+     * Get the tag named [name]
+     * @param  {String} name
+     * @return {String}
+     * @since 0.1.0
      * @class Comment
      */
     getTag: function(name) {
         return this.tags[name];
     },
     /**
-     * [removeTag description]
+     * Remove a tag
+     * 
      * @param  {String} name
-     * @return {Boolean}
+     * @return {Boolean} If removed succeed
+     * @class Comment
+     * @since 0.1.0
      */
     removeTag: function(name) {
         return delete this.tags[name];
@@ -138,12 +149,13 @@ Comment.prototype = {
 };
 
 /**
- * [SourceTextParser description]
+ * Source text parser.
  *
  * @class
  * @param {String} sourceText
  * @param {Object} classes
  * @param {Object} methods
+ * @since 0.1.0
  */
 function SourceTextParser(sourceText, classes, methods) {
     this.Comments = [];
@@ -155,10 +167,11 @@ function SourceTextParser(sourceText, classes, methods) {
 
 SourceTextParser.prototype = {
     /**
-     * [parse description]
+     * Parse the source text to Comment structure.
+     *
+     * @since 0.1.0
      * @class SourceTextParser
-     * @method
-     * @return
+     * @return {Undefined}
      */
     parse: function() {
         var line, lines = this.sourceText.split(/\n/mg),
@@ -175,7 +188,7 @@ SourceTextParser.prototype = {
             } else if (line.startsWith('*/')) {
                 inCommenting = false;
                 closeCommentIdx = i;
-            } else if (!inCommenting && (1 === i - closeCommentIdx) && /(\bfunction\b\s*?(\w+?)\s*\(([^\(\)]*)\))|((\w+)?\s*(?::|=)\s*function\(([^\(\)]*)\))/.test(line)) {
+            } else if (!inCommenting && (1 === i - closeCommentIdx) && /(\bfunction\b\s*?(\w+?)\s*\(([^\(\)]*)\))|((\w+)?\s*(?::|=)\s*function\s*\(([^\(\)]*)\))/.test(line)) {
                 curComment.setFunc(RegExp.$2 || RegExp.$5, RegExp.$3 || RegExp.$6);
                 this.Comments.push(curComment);
                 curComment = null;
@@ -193,7 +206,7 @@ SourceTextParser.prototype = {
             }
 
         } //for
-        // console.log(this.Comments);
+
         this._merge();
     }, //parse
     _merge: function() {
@@ -256,9 +269,6 @@ module.exports = function(source, options) {
     source.forEach(function(s) {
         new SourceTextParser(s, classes, homelessMethods).parse();
     });
-
-    //console.log(classes);
-    //console.log(homelessMethods);
 
     return {
         classes: classes,
