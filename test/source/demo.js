@@ -46,7 +46,13 @@ var Parser = {//---------------------------------------------CLASS
      */
     parse: function (d, x) {//----------------------------------METHOD
         return 'Done';
-    }
+    },
+    /**
+     * [ignore description]
+     * @ignore
+     * @return {[type]} [description]
+     */
+    ignore:function(){}
 };
 
 

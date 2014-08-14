@@ -127,6 +127,7 @@ Comment.prototype = {
             case 'version':
             case 'override':
             case 'todo':
+            case 'ignore':
             case 'deprecated':
                 this.tags[name] = value;
                 break;
@@ -217,11 +218,15 @@ SourceTextParser.prototype = {
                 closeCommentIdx = i;
             } else if (!inCommenting && (1 === i - closeCommentIdx) && /(\bfunction\b\s*?(\w+?)\s*\(([^\(\)]*)\))|((\w+)?\s*(?::|=)\s*function\s*\(([^\(\)]*)\))/.test(line)) {
                 curComment.setFunc(RegExp.$2 || RegExp.$5, RegExp.$3 || RegExp.$6);
-                this.Comments.push(curComment);
+                if ('string' !== typeof curComment.getTag('ignore')) {
+                    this.Comments.push(curComment);
+                }
                 curComment = null;
             } else if (!inCommenting && (1 === i - closeCommentIdx) && /(\w+)\s*(?::|=)(?!\s*function)/.test(line)) {
                 curComment.setAttr(RegExp.$1);
-                this.Comments.push(curComment);
+                if ('string' !== typeof curComment.getTag('ignore')) {
+                    this.Comments.push(curComment);
+                }
                 curComment = null;
             } else if (inCommenting) {
                 line = line.replace(/^\*/, '').trim();
